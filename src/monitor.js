@@ -34,7 +34,7 @@ function dispatch() {
       return
     }
 
-    if (!Array.isArray(dependentCurrent) && !Array.isArray(dependentPrevious) & dependentCurrent !== dependentPrevious) {
+    if (!Array.isArray(dependentCurrent) && !Array.isArray(dependentPrevious) && dependentCurrent !== dependentPrevious) {
       this.executeEvent(i.event)
       this.dependentQueue[index] = dependentCurrent
       return
