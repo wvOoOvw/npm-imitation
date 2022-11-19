@@ -129,7 +129,7 @@ function dispatch() {
       return;
     }
 
-    if (!Array.isArray(dependentCurrent) && !Array.isArray(dependentPrevious) & dependentCurrent !== dependentPrevious) {
+    if (!Array.isArray(dependentCurrent) && !Array.isArray(dependentPrevious) && dependentCurrent !== dependentPrevious) {
       _this.executeEvent(i.event);
 
       _this.dependentQueue[index] = dependentCurrent;
