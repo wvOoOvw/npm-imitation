@@ -236,15 +236,7 @@ Imitation.prototype.withBindRender = imitation_withBindRender;
 Imitation.prototype.useBindRender = imitation_useBindRender;
 
 function setState(v) {
-  if (typeof v === 'function') {
-    var v_ = v(this.state);
-    if (v_ !== undefined) this.state = v_;
-  }
-
-  if (typeof v !== 'function') {
-    this.state = v;
-  }
-
+  this.state = typeof v === 'function' ? v(this.state) : v;
   this.dispatch();
 }
 
