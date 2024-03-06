@@ -51,7 +51,9 @@ __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "default": () => (/* binding */ src)
+  "default": () => (/* binding */ src),
+  "useBindComponentPure": () => (/* reexport */ useBindComponentPure),
+  "withBindComponentPure": () => (/* reexport */ withBindComponentPure)
 });
 
 ;// CONCATENATED MODULE: ./src/monitor.js
@@ -65,8 +67,8 @@ var differentArray = function differentArray(a, b) {
   }).length !== a.length;
 };
 
-function Monitor(ImitationINS) {
-  this.ImitationINS = ImitationINS;
+function Monitor(ImitationInstance) {
+  this.ImitationInstance = ImitationInstance;
   this.dependentQueue = [];
   this.monitorQueue = [];
 }
@@ -134,18 +136,18 @@ function register(event) {
 }
 
 function executeEvent(event) {
-  event(this.ImitationINS.state);
+  event(this.ImitationInstance.state);
 }
 
 function executeDependent(dependent) {
-  return typeof dependent === 'function' ? dependent(this.ImitationINS.state) : dependent;
+  return typeof dependent === 'function' ? dependent(this.ImitationInstance.state) : dependent;
 }
 
 /* harmony default export */ const monitor = (Monitor);
 ;// CONCATENATED MODULE: external "react"
 const external_react_namespaceObject = require("react");
 var external_react_default = /*#__PURE__*/__webpack_require__.n(external_react_namespaceObject);
-;// CONCATENATED MODULE: ./src/reactBindRender.jsx
+;// CONCATENATED MODULE: ./src/ReactBindComponent.jsx
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -160,80 +162,74 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-function ReactBindRender(MonitorINS) {
-  this.MonitorINS = MonitorINS;
+function ReactBindComponent(MonitorInstance) {
+  this.MonitorInstance = MonitorInstance;
 }
 
-ReactBindRender.prototype.withBindRender = withBindRender;
-ReactBindRender.prototype.useBindRender = useBindRender;
+ReactBindComponent.prototype.withBindComponent = withBindComponent;
+ReactBindComponent.prototype.useBindComponent = useBindComponent;
 
-function withBindRender(Component, dependent) {
-  var INS = this;
+function withBindComponent(Component, dependent) {
+  var Instance = this;
   return function App(props) {
     var _React$useState = external_react_default().useState(0),
         _React$useState2 = _slicedToArray(_React$useState, 2),
-        setUpdateRender = _React$useState2[1];
+        update = _React$useState2[0],
+        setUpdate = _React$useState2[1];
 
-    var monitorRef = external_react_default().useRef();
-
-    if (!monitorRef.current) {
-      monitorRef.current = INS.MonitorINS.register(function (d) {
-        setUpdateRender(function (pre) {
+    var destory = external_react_default().useMemo(function () {
+      return Instance.MonitorInstance.register(function (state) {
+        setUpdate(function (pre) {
           return pre + 1;
         });
       }, dependent);
-    }
-
+    }, []);
     external_react_default().useEffect(function () {
       return function () {
-        monitorRef.current();
+        return destory();
       };
     }, []);
     return /*#__PURE__*/external_react_default().createElement(Component, props);
   };
 }
 
-function useBindRender(dependent) {
+function useBindComponent(dependent) {
   var _React$useState3 = external_react_default().useState(0),
       _React$useState4 = _slicedToArray(_React$useState3, 2),
-      updateRender = _React$useState4[0],
-      setUpdateRender = _React$useState4[1];
+      update = _React$useState4[0],
+      setUpdate = _React$useState4[1];
 
-  var monitorRef = external_react_default().useRef();
-
-  if (!monitorRef.current) {
-    monitorRef.current = this.MonitorINS.register(function (d) {
-      setUpdateRender(function (pre) {
+  var destory = external_react_default().useMemo(function () {
+    return Instance.MonitorInstance.register(function (state) {
+      setUpdate(function (pre) {
         return pre + 1;
       });
     }, dependent);
-  }
-
+  }, []);
   external_react_default().useEffect(function () {
     return function () {
-      monitorRef.current();
+      return destory();
     };
   }, []);
-  return updateRender;
 }
 
-/* harmony default export */ const reactBindRender = (ReactBindRender);
+/* harmony default export */ const src_ReactBindComponent = (ReactBindComponent);
 ;// CONCATENATED MODULE: ./src/imitation.js
 
 
 
 function Imitation(v) {
   this.state = v;
-  this.MonitorINS = new monitor(this);
-  this.ReactBindRenderINS = new reactBindRender(this.MonitorINS);
+  this.MonitorInstance = new monitor(this);
+  this.ReactBindComponentInstance = new src_ReactBindComponent(this.MonitorInstance);
 }
 
 Imitation.prototype.setState = setState;
 Imitation.prototype.assignState = assignState;
 Imitation.prototype.register = imitation_register;
 Imitation.prototype.dispatch = imitation_dispatch;
-Imitation.prototype.withBindRender = imitation_withBindRender;
-Imitation.prototype.useBindRender = imitation_useBindRender;
+Imitation.prototype.withBindComponent = imitation_withBindComponent;
+Imitation.prototype.useBindComponent = imitation_useBindComponent;
 
 function setState(v) {
   this.state = typeof v === 'function' ? v(this.state) : v;
@@ -246,33 +242,106 @@ function assignState(v) {
 }
 
 function imitation_register() {
-  var _this$MonitorINS;
+  var _this$MonitorInstance;
 
-  return (_this$MonitorINS = this.MonitorINS).register.apply(_this$MonitorINS, arguments);
+  return (_this$MonitorInstance = this.MonitorInstance).register.apply(_this$MonitorInstance, arguments);
 }
 
 function imitation_dispatch() {
-  var _this$MonitorINS2;
+  var _this$MonitorInstance2;
 
-  return (_this$MonitorINS2 = this.MonitorINS).dispatch.apply(_this$MonitorINS2, arguments);
+  return (_this$MonitorInstance2 = this.MonitorInstance).dispatch.apply(_this$MonitorInstance2, arguments);
 }
 
-function imitation_withBindRender() {
+function imitation_withBindComponent() {
   var _this$ReactBindRender;
 
-  return (_this$ReactBindRender = this.ReactBindRenderINS).withBindRender.apply(_this$ReactBindRender, arguments);
+  return (_this$ReactBindRender = this.ReactBindRenderInstance).withBindComponent.apply(_this$ReactBindRender, arguments);
 }
 
-function imitation_useBindRender() {
+function imitation_useBindComponent() {
   var _this$ReactBindRender2;
 
-  return (_this$ReactBindRender2 = this.ReactBindRenderINS).useBindRender.apply(_this$ReactBindRender2, arguments);
+  return (_this$ReactBindRender2 = this.ReactBindRenderInstance).useBindComponent.apply(_this$ReactBindRender2, arguments);
 }
 
 /* harmony default export */ const imitation = (Imitation);
+;// CONCATENATED MODULE: ./src/ReactBindComponentPure.jsx
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || ReactBindComponentPure_unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return ReactBindComponentPure_arrayLikeToArray(arr); }
+
+function ReactBindComponentPure_slicedToArray(arr, i) { return ReactBindComponentPure_arrayWithHoles(arr) || ReactBindComponentPure_iterableToArrayLimit(arr, i) || ReactBindComponentPure_unsupportedIterableToArray(arr, i) || ReactBindComponentPure_nonIterableRest(); }
+
+function ReactBindComponentPure_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function ReactBindComponentPure_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return ReactBindComponentPure_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return ReactBindComponentPure_arrayLikeToArray(o, minLen); }
+
+function ReactBindComponentPure_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function ReactBindComponentPure_iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function ReactBindComponentPure_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+function withBindComponentPure(Component, ImitationMap) {
+  return function App(props) {
+    var _React$useState = external_react_default().useState(0),
+        _React$useState2 = ReactBindComponentPure_slicedToArray(_React$useState, 2),
+        update = _React$useState2[0],
+        setUpdate = _React$useState2[1];
+
+    var destory = external_react_default().useMemo(function () {
+      return ImitationMap.reduce(function (t, i) {
+        return [].concat(_toConsumableArray(t), [i.instance.register(function (state) {
+          setUpdate(function (pre) {
+            return pre + 1;
+          });
+        }, i.dependent)]);
+      }, []);
+    }, [ImitationMap]);
+    external_react_default().useEffect(function () {
+      return function () {
+        return destory();
+      };
+    }, [ImitationMap]);
+    return /*#__PURE__*/external_react_default().createElement(Component, props);
+  };
+}
+
+function useBindComponentPure(ImitationMap) {
+  var _React$useState3 = external_react_default().useState(0),
+      _React$useState4 = ReactBindComponentPure_slicedToArray(_React$useState3, 2),
+      update = _React$useState4[0],
+      setUpdate = _React$useState4[1];
+
+  var destory = external_react_default().useMemo(function () {
+    return ImitationMap.reduce(function (t, i) {
+      return [].concat(_toConsumableArray(t), [i.instance.register(function (state) {
+        setUpdate(function (pre) {
+          return pre + 1;
+        });
+      }, i.dependent)]);
+    }, []);
+  }, [ImitationMap]);
+  external_react_default().useEffect(function () {
+    return function () {
+      return destory();
+    };
+  }, [ImitationMap]);
+}
+
+
 ;// CONCATENATED MODULE: ./src/index.js
 
+
 /* harmony default export */ const src = (imitation);
+
 var __webpack_export_target__ = exports;
 for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });

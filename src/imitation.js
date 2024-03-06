@@ -1,18 +1,18 @@
 import Monitor from './monitor'
-import ReactBindRender from './reactBindRender'
+import ReactBindComponent from './ReactBindComponent'
 
 function Imitation(v) {
   this.state = v
-  this.MonitorINS = new Monitor(this)
-  this.ReactBindRenderINS = new ReactBindRender(this.MonitorINS)
+  this.MonitorInstance = new Monitor(this)
+  this.ReactBindComponentInstance = new ReactBindComponent(this.MonitorInstance)
 }
 
 Imitation.prototype.setState = setState
 Imitation.prototype.assignState = assignState
 Imitation.prototype.register = register
 Imitation.prototype.dispatch = dispatch
-Imitation.prototype.withBindRender = withBindRender
-Imitation.prototype.useBindRender = useBindRender
+Imitation.prototype.withBindComponent = withBindComponent
+Imitation.prototype.useBindComponent = useBindComponent
 
 function setState(v) {
   this.state = typeof v === 'function' ? v(this.state) : v
@@ -25,16 +25,16 @@ function assignState(v) {
 }
 
 function register() {
-  return this.MonitorINS.register(...arguments)
+  return this.MonitorInstance.register(...arguments)
 }
 function dispatch() {
-  return this.MonitorINS.dispatch(...arguments)
+  return this.MonitorInstance.dispatch(...arguments)
 }
-function withBindRender() {
-  return this.ReactBindRenderINS.withBindRender(...arguments)
+function withBindComponent() {
+  return this.ReactBindRenderInstance.withBindComponent(...arguments)
 }
-function useBindRender() {
-  return this.ReactBindRenderINS.useBindRender(...arguments)
+function useBindComponent() {
+  return this.ReactBindRenderInstance.useBindComponent(...arguments)
 }
 
 export default Imitation
