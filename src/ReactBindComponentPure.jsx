@@ -3,7 +3,7 @@ import React from 'react'
 function withBindComponentPure(Component, ImitationMap) {
   return function App(props) {
     const [update, setUpdate] = React.useState(0)
-    const destory = React.useMemo(() => ImitationMap.reduce((t, i) => [...t, i.instance.register(state => { setUpdate(pre => pre + 1) }, i.dependent)], []), [ImitationMap])
+    const destory = React.useMemo(() => ImitationMap.reduce((t, i) => [...t, i.I.register(state => { setUpdate(pre => pre + 1) }, i.dependent)], []), [ImitationMap])
     React.useEffect(() => () => destory(), [ImitationMap])
     return <Component {...props} />
   }
@@ -11,7 +11,7 @@ function withBindComponentPure(Component, ImitationMap) {
 
 function useBindComponentPure(ImitationMap) {
   const [update, setUpdate] = React.useState(0)
-  const destory = React.useMemo(() => ImitationMap.reduce((t, i) => [...t, i.instance.register(state => { setUpdate(pre => pre + 1) }, i.dependent)], []), [ImitationMap])
+  const destory = React.useMemo(() => ImitationMap.reduce((t, i) => [...t, i.I.register(state => { setUpdate(pre => pre + 1) }, i.dependent)], []), [ImitationMap])
   React.useEffect(() => () => destory(), [ImitationMap])
 }
 
