@@ -213,16 +213,14 @@ ReactBindComponent.prototype.useBindComponentPure = useBindComponentPure;
 function withBindComponent(Component, dependent) {
   var Instance = this;
   return function App(props) {
-    var _React$useState = external_react_default().useState(0),
+    var _React$useState = external_react_default().useState(performance.now()),
         _React$useState2 = _slicedToArray(_React$useState, 2),
         update = _React$useState2[0],
         setUpdate = _React$useState2[1];
 
     var destory = external_react_default().useMemo(function () {
-      return Instance.MonitorInstance.register(function (state) {
-        setUpdate(function (pre) {
-          return pre + 1;
-        });
+      return Instance.MonitorInstance.register(function () {
+        return setUpdate(performance.now());
       }, dependent);
     }, []);
     external_react_default().useEffect(function () {
@@ -235,16 +233,14 @@ function withBindComponent(Component, dependent) {
 }
 
 function useBindComponent(dependent) {
-  var _React$useState3 = external_react_default().useState(0),
+  var _React$useState3 = external_react_default().useState(performance.now()),
       _React$useState4 = _slicedToArray(_React$useState3, 2),
       update = _React$useState4[0],
       setUpdate = _React$useState4[1];
 
   var destory = external_react_default().useMemo(function () {
-    return Instance.MonitorInstance.register(function (state) {
-      setUpdate(function (pre) {
-        return pre + 1;
-      });
+    return Instance.MonitorInstance.register(function () {
+      return setUpdate(performance.now());
     }, dependent);
   }, []);
   external_react_default().useEffect(function () {
@@ -256,17 +252,15 @@ function useBindComponent(dependent) {
 
 function withBindComponentPure(Component, ImitationMap) {
   return function App(props) {
-    var _React$useState5 = external_react_default().useState(0),
+    var _React$useState5 = external_react_default().useState(performance.now()),
         _React$useState6 = _slicedToArray(_React$useState5, 2),
         update = _React$useState6[0],
         setUpdate = _React$useState6[1];
 
     var destory = external_react_default().useMemo(function () {
       return ImitationMap.reduce(function (t, i) {
-        return [].concat(_toConsumableArray(t), [i.instance.register(function (state) {
-          setUpdate(function (pre) {
-            return pre + 1;
-          });
+        return [].concat(_toConsumableArray(t), [i.instance.register(function () {
+          return setUpdate(performance.now());
         }, i.dependent)]);
       }, []);
     }, [ImitationMap]);
@@ -280,17 +274,15 @@ function withBindComponentPure(Component, ImitationMap) {
 }
 
 function useBindComponentPure(ImitationMap) {
-  var _React$useState7 = external_react_default().useState(0),
+  var _React$useState7 = external_react_default().useState(performance.now()),
       _React$useState8 = _slicedToArray(_React$useState7, 2),
       update = _React$useState8[0],
       setUpdate = _React$useState8[1];
 
   var destory = external_react_default().useMemo(function () {
     return ImitationMap.reduce(function (t, i) {
-      return [].concat(_toConsumableArray(t), [i.instance.register(function (state) {
-        setUpdate(function (pre) {
-          return pre + 1;
-        });
+      return [].concat(_toConsumableArray(t), [i.instance.register(function () {
+        return setUpdate(performance.now());
       }, i.dependent)]);
     }, []);
   }, [ImitationMap]);

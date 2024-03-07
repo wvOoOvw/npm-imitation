@@ -1,7 +1,7 @@
 {
   "name": "imitation-imm",
-  "version": "2.6.3",
-  "description": "react state",
+  "version": "2.6.4",
+  "description": "",
   "main": "index.js",
   "devDependencies": {
     "@babel/core": "^7.14.8",
