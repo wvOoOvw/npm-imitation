@@ -1,7 +1,7 @@
 import React from 'react'
 
-function ReactBindComponent(MonitorI) {
-  this.MonitorI = MonitorI
+function ReactBindComponent(MonitorInstance) {
+  this.MonitorInstance = MonitorInstance
 }
 
 ReactBindComponent.prototype.withBindComponent = withBindComponent

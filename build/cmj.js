@@ -169,8 +169,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-function ReactBindComponent(MonitorI) {
-  this.MonitorI = MonitorI;
+function ReactBindComponent(MonitorInstance) {
+  this.MonitorInstance = MonitorInstance;
 }
 
 ReactBindComponent.prototype.withBindComponent = withBindComponent;
