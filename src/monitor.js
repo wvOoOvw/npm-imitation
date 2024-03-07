@@ -6,8 +6,8 @@ const differentArray = (a, b) => {
   return a.filter((i, index) => i === b[index]).length !== a.length
 }
 
-function Monitor(ImitationI) {
-  this.ImitationI = ImitationI
+function Monitor(ImitationInstance) {
+  this.ImitationInstance = ImitationInstance
   this.dependentQueue = []
   this.monitorQueue = []
 }
@@ -60,11 +60,11 @@ function register(event, dependent = _Allow) {
 }
 
 function executeEvent(event) {
-  event(this.ImitationI.state)
+  event(this.ImitationInstance.state)
 }
 
 function executeDependent(dependent) {
-  return typeof dependent === 'function' ? dependent(this.ImitationI.state) : dependent
+  return typeof dependent === 'function' ? dependent(this.ImitationInstance.state) : dependent
 }
 
 export default Monitor

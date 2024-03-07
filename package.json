@@ -1,6 +1,6 @@
 {
   "name": "imitation-imm",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "description": "react state",
   "main": "index.js",
   "devDependencies": {
