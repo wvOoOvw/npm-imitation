@@ -85,7 +85,7 @@ __webpack_require__.d(__webpack_exports__, {
   "default": () => (/* binding */ src)
 });
 
-// UNUSED EXPORTS: ReactBindComponent
+// UNUSED EXPORTS: useBindComponentPure, withBindComponentPure
 
 ;// CONCATENATED MODULE: ./src/monitor.js
 var _Allow = Symbol('_Allow');
@@ -302,6 +302,7 @@ function useBindComponentPure(ImitationMap) {
 }
 
 /* harmony default export */ const React_BindComponent = (ReactBindComponent);
+
 ;// CONCATENATED MODULE: ./src/imitation.js
 
 

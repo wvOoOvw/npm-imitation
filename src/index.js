@@ -1,5 +1,5 @@
 import Imitation from './imitation'
-import ReactBindComponent from './React.BindComponent'
+import { withBindComponentPure, useBindComponentPure } from './React.BindComponent'
 
 export default Imitation
-export { ReactBindComponent }
+export { withBindComponentPure, useBindComponentPure }

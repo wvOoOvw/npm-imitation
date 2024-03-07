@@ -42,3 +42,5 @@ function useBindComponentPure(ImitationMap) {
 }
 
 export default ReactBindComponent
+
+export { withBindComponentPure, useBindComponentPure }

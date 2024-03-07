@@ -51,8 +51,9 @@ __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "ReactBindComponent": () => (/* reexport */ React_BindComponent),
-  "default": () => (/* binding */ src)
+  "default": () => (/* binding */ src),
+  "useBindComponentPure": () => (/* reexport */ useBindComponentPure),
+  "withBindComponentPure": () => (/* reexport */ withBindComponentPure)
 });
 
 ;// CONCATENATED MODULE: ./src/monitor.js
@@ -270,6 +271,7 @@ function useBindComponentPure(ImitationMap) {
 }
 
 /* harmony default export */ const React_BindComponent = (ReactBindComponent);
+
 ;// CONCATENATED MODULE: ./src/imitation.js
 
 
