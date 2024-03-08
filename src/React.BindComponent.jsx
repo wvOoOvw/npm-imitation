@@ -30,7 +30,7 @@ function withBindComponentPure(Component, ImitationMap) {
   return function App(props) {
     const [update, setUpdate] = React.useState(performance.now())
     const destory = React.useMemo(() => ImitationMap.reduce((t, i) => [...t, i.instance.register(() => setUpdate(performance.now()), i.dependent)], []), [ImitationMap])
-    React.useEffect(() => () => destory(), [ImitationMap])
+    React.useEffect(() => () => destory.forEach(i => i()), [ImitationMap])
     return <Component {...props} />
   }
 }
@@ -38,7 +38,7 @@ function withBindComponentPure(Component, ImitationMap) {
 function useBindComponentPure(ImitationMap) {
   const [update, setUpdate] = React.useState(performance.now())
   const destory = React.useMemo(() => ImitationMap.reduce((t, i) => [...t, i.instance.register(() => setUpdate(performance.now()), i.dependent)], []), [ImitationMap])
-  React.useEffect(() => () => destory(), [ImitationMap])
+  React.useEffect(() => () => destory.forEach(i => i()), [ImitationMap])
 }
 
 export default ReactBindComponent

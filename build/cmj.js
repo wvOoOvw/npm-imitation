@@ -235,7 +235,9 @@ function withBindComponentPure(Component, ImitationMap) {
     }, [ImitationMap]);
     external_react_default().useEffect(function () {
       return function () {
-        return destory();
+        return destory.forEach(function (i) {
+          return i();
+        });
       };
     }, [ImitationMap]);
     return /*#__PURE__*/external_react_default().createElement(Component, props);
@@ -257,7 +259,9 @@ function useBindComponentPure(ImitationMap) {
   }, [ImitationMap]);
   external_react_default().useEffect(function () {
     return function () {
-      return destory();
+      return destory.forEach(function (i) {
+        return i();
+      });
     };
   }, [ImitationMap]);
 }
