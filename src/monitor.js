@@ -8,52 +8,52 @@ const differentArray = (a, b) => {
 
 function Monitor(ImitationInstance) {
   this.ImitationInstance = ImitationInstance
-  this.dependentQueue = []
+  this.dependenceQueue = []
   this.monitorQueue = []
 }
 
 Monitor.prototype.dispatch = dispatch
 Monitor.prototype.register = register
 Monitor.prototype.executeEvent = executeEvent
-Monitor.prototype.executeDependent = executeDependent
+Monitor.prototype.executeDependence = executeDependence
 
 function dispatch() {
   this.monitorQueue.forEach((i, index) => {
-    const dependentPrevious = this.dependentQueue[index]
-    const dependentCurrent = this.executeDependent(i.dependent)
+    const dependencePrevious = this.dependenceQueue[index]
+    const dependenceCurrent = this.executeDependence(i.dependence)
 
-    if (dependentCurrent === _Allow) {
+    if (dependenceCurrent === _Allow) {
       this.executeEvent(i.event)
-      this.dependentQueue[index] = dependentCurrent
+      this.dependenceQueue[index] = dependenceCurrent
       return
     }
 
-    if (Array.isArray(dependentCurrent) && Array.isArray(dependentPrevious) && differentArray(dependentCurrent, dependentPrevious)) {
+    if (Array.isArray(dependenceCurrent) && Array.isArray(dependencePrevious) && differentArray(dependenceCurrent, dependencePrevious)) {
       this.executeEvent(i.event)
-      this.dependentQueue[index] = dependentCurrent
+      this.dependenceQueue[index] = dependenceCurrent
       return
     }
 
-    if (!Array.isArray(dependentCurrent) && !Array.isArray(dependentPrevious) && dependentCurrent !== dependentPrevious) {
+    if (!Array.isArray(dependenceCurrent) && !Array.isArray(dependencePrevious) && dependenceCurrent !== dependencePrevious) {
       this.executeEvent(i.event)
-      this.dependentQueue[index] = dependentCurrent
+      this.dependenceQueue[index] = dependenceCurrent
       return
     }
 
-    this.dependentQueue[index] = dependentCurrent
+    this.dependenceQueue[index] = dependenceCurrent
   })
 }
 
-function register(event, dependent = _Allow) {
-  const monitor = { event, dependent }
+function register(event, dependence = _Allow) {
+  const monitor = { event, dependence }
   this.monitorQueue.push(monitor)
-  this.dependentQueue.push(this.executeDependent(dependent))
+  this.dependenceQueue.push(this.executeDependence(dependence))
 
   return () => {
     this.monitorQueue.forEach((i, index) => {
       if (i === monitor) {
         this.monitorQueue = this.monitorQueue.filter((i, index_) => index_ !== index)
-        this.dependentQueue = this.dependentQueue.filter((i, index_) => index_ !== index)
+        this.dependenceQueue = this.dependenceQueue.filter((i, index_) => index_ !== index)
       }
     })
   }
@@ -63,8 +63,8 @@ function executeEvent(event) {
   event(this.ImitationInstance.state)
 }
 
-function executeDependent(dependent) {
-  return typeof dependent === 'function' ? dependent(this.ImitationInstance.state) : dependent
+function executeDependence(dependence) {
+  return typeof dependence === 'function' ? dependence(this.ImitationInstance.state) : dependence
 }
 
 export default Monitor

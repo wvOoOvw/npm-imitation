@@ -100,65 +100,65 @@ var differentArray = function differentArray(a, b) {
 
 function Monitor(ImitationInstance) {
   this.ImitationInstance = ImitationInstance;
-  this.dependentQueue = [];
+  this.dependenceQueue = [];
   this.monitorQueue = [];
 }
 
 Monitor.prototype.dispatch = dispatch;
 Monitor.prototype.register = register;
 Monitor.prototype.executeEvent = executeEvent;
-Monitor.prototype.executeDependent = executeDependent;
+Monitor.prototype.executeDependence = executeDependence;
 
 function dispatch() {
   var _this = this;
 
   this.monitorQueue.forEach(function (i, index) {
-    var dependentPrevious = _this.dependentQueue[index];
+    var dependencePrevious = _this.dependenceQueue[index];
 
-    var dependentCurrent = _this.executeDependent(i.dependent);
+    var dependenceCurrent = _this.executeDependence(i.dependence);
 
-    if (dependentCurrent === _Allow) {
+    if (dependenceCurrent === _Allow) {
       _this.executeEvent(i.event);
 
-      _this.dependentQueue[index] = dependentCurrent;
+      _this.dependenceQueue[index] = dependenceCurrent;
       return;
     }
 
-    if (Array.isArray(dependentCurrent) && Array.isArray(dependentPrevious) && differentArray(dependentCurrent, dependentPrevious)) {
+    if (Array.isArray(dependenceCurrent) && Array.isArray(dependencePrevious) && differentArray(dependenceCurrent, dependencePrevious)) {
       _this.executeEvent(i.event);
 
-      _this.dependentQueue[index] = dependentCurrent;
+      _this.dependenceQueue[index] = dependenceCurrent;
       return;
     }
 
-    if (!Array.isArray(dependentCurrent) && !Array.isArray(dependentPrevious) && dependentCurrent !== dependentPrevious) {
+    if (!Array.isArray(dependenceCurrent) && !Array.isArray(dependencePrevious) && dependenceCurrent !== dependencePrevious) {
       _this.executeEvent(i.event);
 
-      _this.dependentQueue[index] = dependentCurrent;
+      _this.dependenceQueue[index] = dependenceCurrent;
       return;
     }
 
-    _this.dependentQueue[index] = dependentCurrent;
+    _this.dependenceQueue[index] = dependenceCurrent;
   });
 }
 
 function register(event) {
   var _this2 = this;
 
-  var dependent = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _Allow;
+  var dependence = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _Allow;
   var monitor = {
     event: event,
-    dependent: dependent
+    dependence: dependence
   };
   this.monitorQueue.push(monitor);
-  this.dependentQueue.push(this.executeDependent(dependent));
+  this.dependenceQueue.push(this.executeDependence(dependence));
   return function () {
     _this2.monitorQueue.forEach(function (i, index) {
       if (i === monitor) {
         _this2.monitorQueue = _this2.monitorQueue.filter(function (i, index_) {
           return index_ !== index;
         });
-        _this2.dependentQueue = _this2.dependentQueue.filter(function (i, index_) {
+        _this2.dependenceQueue = _this2.dependenceQueue.filter(function (i, index_) {
           return index_ !== index;
         });
       }
@@ -170,8 +170,8 @@ function executeEvent(event) {
   event(this.ImitationInstance.state);
 }
 
-function executeDependent(dependent) {
-  return typeof dependent === 'function' ? dependent(this.ImitationInstance.state) : dependent;
+function executeDependence(dependence) {
+  return typeof dependence === 'function' ? dependence(this.ImitationInstance.state) : dependence;
 }
 
 /* harmony default export */ const monitor = (Monitor);
@@ -210,7 +210,7 @@ ReactBindComponent.prototype.useBindComponent = useBindComponent;
 ReactBindComponent.prototype.withBindComponentPure = withBindComponentPure;
 ReactBindComponent.prototype.useBindComponentPure = useBindComponentPure;
 
-function withBindComponent(Component, dependent) {
+function withBindComponent(Component, dependence) {
   var Instance = this;
   return function App(props) {
     var _React$useState = external_react_default().useState(performance.now()),
@@ -221,7 +221,7 @@ function withBindComponent(Component, dependent) {
     var destory = external_react_default().useMemo(function () {
       return Instance.MonitorInstance.register(function () {
         return setUpdate(performance.now());
-      }, dependent);
+      }, dependence);
     }, []);
     external_react_default().useEffect(function () {
       return function () {
@@ -232,7 +232,7 @@ function withBindComponent(Component, dependent) {
   };
 }
 
-function useBindComponent(dependent) {
+function useBindComponent(dependence) {
   var _React$useState3 = external_react_default().useState(performance.now()),
       _React$useState4 = _slicedToArray(_React$useState3, 2),
       update = _React$useState4[0],
@@ -241,7 +241,7 @@ function useBindComponent(dependent) {
   var destory = external_react_default().useMemo(function () {
     return Instance.MonitorInstance.register(function () {
       return setUpdate(performance.now());
-    }, dependent);
+    }, dependence);
   }, []);
   external_react_default().useEffect(function () {
     return function () {
@@ -261,7 +261,7 @@ function withBindComponentPure(Component, ImitationMap) {
       return ImitationMap.reduce(function (t, i) {
         return [].concat(_toConsumableArray(t), [i.instance.register(function () {
           return setUpdate(performance.now());
-        }, i.dependent)]);
+        }, i.dependence)]);
       }, []);
     }, [ImitationMap]);
     external_react_default().useEffect(function () {
@@ -285,7 +285,7 @@ function useBindComponentPure(ImitationMap) {
     return ImitationMap.reduce(function (t, i) {
       return [].concat(_toConsumableArray(t), [i.instance.register(function () {
         return setUpdate(performance.now());
-      }, i.dependent)]);
+      }, i.dependence)]);
     }, []);
   }, [ImitationMap]);
   external_react_default().useEffect(function () {
