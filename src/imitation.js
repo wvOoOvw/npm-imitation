@@ -24,17 +24,17 @@ function assignState(v) {
   this.dispatch()
 }
 
-function register() {
-  return this.MonitorInstance.register(...arguments)
+function register(...props) {
+  return this.MonitorInstance.register(...props)
 }
-function dispatch() {
-  return this.MonitorInstance.dispatch(...arguments)
+function dispatch(...props) {
+  return this.MonitorInstance.dispatch(...props)
 }
-function withBindComponent() {
-  return this.ReactBindComponentInstance.withBindComponent(...arguments)
+function withBindComponent(...props) {
+  return this.ReactBindComponentInstance.withBindComponent(...props)
 }
-function useBindComponent() {
-  return this.ReactBindComponentInstance.useBindComponent(...arguments)
+function useBindComponent(...props) {
+  return this.ReactBindComponentInstance.useBindComponent(...props)
 }
 
 export default Imitation

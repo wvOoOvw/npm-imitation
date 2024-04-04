@@ -13,7 +13,7 @@ function dependentA(state) {
   console.log(state)
   return state.name
 }
-const NameS = ImitationINS.withBindRender(Name, dependentA)
+const NameS = ImitationINS.withBindComponent(Name, dependentA)
 
 
 function Address() {
@@ -24,14 +24,14 @@ function Address() {
   }
   return <input onChange={onChange} value={ImitationINS.state.address} />
 }
-const AddressS = ImitationINS.withBindRender(Address, state => [state.address])
+const AddressS = ImitationINS.withBindComponent(Address, state => [state.address])
 
 
 function AddressShow() {
   console.log('render AddressShow')
   return ImitationINS.state.address
 }
-const AddressShowS = ImitationINS.withBindRender(AddressShow, state => [state.address])
+const AddressShowS = ImitationINS.withBindComponent(AddressShow, state => [state.address])
 
 
 function App() {
@@ -39,8 +39,11 @@ function App() {
   return <div>
     <NameS />
     <AddressS />
-    <AddressShowS/>
+    <AddressShowS />
   </div>
 }
 
+
 ReactDOM.render(<App />, document.getElementById('root'))
+
+ImitationINS.register(() => { console.log(ImitationINS.state.address) }, state => [state.address])
